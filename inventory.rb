@@ -1,4 +1,8 @@
 
+def shift(inventory, item, amount)
+
+end
+
 def update(inventory, item, new_amount)
   # Update amount of item in inventory
 end
@@ -30,7 +34,7 @@ def command_caller(command, args)
   when "add", "subtract"
     # Update item amount based on existing amount
   else
-    
+
     # Something invalid got through.
     return false
   end
