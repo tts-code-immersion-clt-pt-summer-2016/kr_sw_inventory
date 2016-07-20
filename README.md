@@ -7,3 +7,5 @@
 * add - Add amount to item
 * remove - Remove amount from item
 * delete - Delete item entirely
+* help
+* close
