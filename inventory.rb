@@ -15,12 +15,33 @@ def show(inventory)
   # Display inventory
 end
 
+def command_caller(command, args)
+  *item, value = args
+  item_name = center_args.join(' ').lowercase
+  case command
+  when "help"
+    # Run help method
+  when "new"
+    # Create new inventory item
+  when "update"
+    # Set new inventory value
+  when "delete"
+    # Remove an item from inventory
+  when "add", "subtract"
+    # Update item amount based on existing amount
+  else
+    
+    # Something invalid got through.
+    return false
+  end
+  return true
+end
+
 def command_parser(input)
-  valid_commands = ["help","show","add","update","remove"]
-  command, *center_arg, final_arg = input
+  valid_commands = ["help","new","update","delete","add","subtract","close"]
+  command, *arguments = input
   if valid_commands.include?(command)
-    return "I know what to do with this command.\nIt's the '#{command}' command,
-            with arguments #{center_arg} and #{final_arg}."
+    return "I know what to do with this command.\nIt's the '#{command}' command."
   else
     return "I don't know what to do with the #{command} command."
   end
@@ -30,7 +51,7 @@ inventory = {}
 command = ""
 
 while command != 'close'
-  print '#> '
+  print 'Inventory #> '
   input = gets.chomp.split(' ')
   puts command_parser(input)
   command = input[0]
