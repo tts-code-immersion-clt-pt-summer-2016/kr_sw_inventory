@@ -34,7 +34,6 @@ def command_caller(command, args)
   when "add", "subtract"
     # Update item amount based on existing amount
   else
-
     # Something invalid got through.
     return false
   end
