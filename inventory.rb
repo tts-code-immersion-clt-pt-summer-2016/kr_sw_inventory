@@ -1,78 +1,81 @@
+class Inventory
 
-def create(inventory, item, amount)
-  inventory[item] = amount
-end
+  attr_reader :inventory
 
-def shift(inventory, item, amount)
-  inventory[item] = inventory[item] + amount
-end
+  def initialize(i = {})
+    i.default = nil
+    @inventory = i
+  end
 
-def update(inventory, item, amount)
-  # Update amount of item in inventory
-  # or create new item in inventory
-  inventory[item] = amount
-end
+  def create(item)
+    @inventory[item] = 0
+  end
 
-def remove(inventory, item)
-  inventory.delete(item)
-end
+  def update(item, value)
+    @inventory[item] = value
+  end
 
-def add(inventory, item, amount)
-  # Add item to inventory
-  return inventory
-end
+  def shift(item, value)
+    @inventory[item] = @inventory[item] + value
+  end
 
-def show(inventory)
-  # Display inventory
-  return inventory
+  def remove(item)
+    @inventory.delete(item)
+  end
+
+  def display
+    return @inventory.inspect
+  end
+
 end
 
 def help
-  return "Here is helpful documentation."
+  return "Here is helpful documentation. Not really, sorry."
 end
 
 def command_caller(i, command, item, value)
-  *item, value = args
-  item_name = center_args.join(' ').lowercase
   case command
   when "help"
     puts help()
   when "new"
-    update(i, item, value)
+    i.create(item)
   when "update"
-    update(i, item, value)
+    i.update(item, value)
   when "delete"
-    remove(i, item, value)
+    i.remove(item)
   when "add", "subtract"
     value *= -1 if command == "subtract"
-    shift(i, item, value)
+    i.shift(item, value)
+  when "show"
+    puts i.display
+  when "close"
+    sleep(1)
   else
-    # Something invalid got through.
     return false
   end
   return true
 end
 
-def command_parser(input)
-  valid_commands = ["help","new","update","delete","add","subtract","close"]
-  command, *arguments = input
-  if valid_commands.include?(command)
-    return "I know what to do with this command.\nIt's the '#{command}' command."
+def command_parser(command, input)
+  if input.length == 1
+    return [input[0], nil]
+  elsif command == "new" || command == "delete"
+    return [input.join(' '), nil]
   else
-    return "I don't know what to do with the #{command} command."
+    value = input.pop
+    return [input.join(' '), value.to_i]
   end
 end
 
-inventory = {}
+inventory = Inventory.new()
 command = ""
 
 while command != 'close'
   print 'Inventory #> '
   input = gets.chomp.split(' ')
-  command, *item_name, value = input
-  if command_caller(inventory, command, item_name, value)
-    puts "Command run successfully."
-  else
+  command = input.shift
+  item_name, value = command_parser(command, input)
+  if !command_caller(inventory, command, item_name, value)
     puts "Something went wrong."
   end
 end
