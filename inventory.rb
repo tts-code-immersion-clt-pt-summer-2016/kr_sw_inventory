@@ -1,38 +1,51 @@
 
-def shift(inventory, item, amount)
-
+def create(inventory, item, amount)
+  inventory[item] = amount
 end
 
-def update(inventory, item, new_amount)
+def shift(inventory, item, amount)
+  inventory[item] = inventory[item] + amount
+end
+
+def update(inventory, item, amount)
   # Update amount of item in inventory
+  # or create new item in inventory
+  inventory[item] = amount
 end
 
 def remove(inventory, item)
-  # Remove item from inventory
+  inventory.delete(item)
 end
 
 def add(inventory, item, amount)
   # Add item to inventory
+  return inventory
 end
 
 def show(inventory)
   # Display inventory
+  return inventory
 end
 
-def command_caller(command, args)
+def help
+  return "Here is helpful documentation."
+end
+
+def command_caller(i, command, item, value)
   *item, value = args
   item_name = center_args.join(' ').lowercase
   case command
   when "help"
-    # Run help method
+    puts help()
   when "new"
-    # Create new inventory item
+    update(i, item, value)
   when "update"
-    # Set new inventory value
+    update(i, item, value)
   when "delete"
-    # Remove an item from inventory
+    remove(i, item, value)
   when "add", "subtract"
-    # Update item amount based on existing amount
+    value *= -1 if command == "subtract"
+    shift(i, item, value)
   else
     # Something invalid got through.
     return false
@@ -56,6 +69,10 @@ command = ""
 while command != 'close'
   print 'Inventory #> '
   input = gets.chomp.split(' ')
-  puts command_parser(input)
-  command = input[0]
+  command, *item_name, value = input
+  if command_caller(inventory, command, item_name, value)
+    puts "Command run successfully."
+  else
+    puts "Something went wrong."
+  end
 end
