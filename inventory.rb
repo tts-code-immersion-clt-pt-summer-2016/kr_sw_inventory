@@ -8,7 +8,7 @@ class Inventory
   end
 
   def new(item)
-    inv
+    inv.new
   end
 
   def update(amount)
@@ -20,7 +20,7 @@ class Inventory
   end
 
   def Remove(amount)
-    #remove amount from item
+    inv.delete
   end
 
   def delete(item)
